@@ -273,7 +273,10 @@ class PIG
 }
 
 $ThePIG = New PIG(
-	'lkjhagpiauJLKJHFÖWKBÖFBÖWGDI¨.,§ÖWGfi¸<>ß≈ç+4uwpi!"#€%&/()(="€)?=)(€egfökawegöjhsrögjhöaugaigptaweJLKJHFÖWKBÖFBÖWGDI¨.,§ÖWGfi¸<>ß≈ç+4uwpi!"#€%&/()(="€)?=)(€egfökawegöjhsrögjhöaugaigptaweöfhöakjhgökharfiyaiwuefWKBÖFBÖWGDI¨.,§ÖWGfi¸<>ß≈ç+4uwpi!"#€%&/()(="€)?=)(€egfökawegöjhsrögjhöaugaigptaJLKJHFÖWKBÖFBÖWGDI¨.,§ÖWGfi¸<>ß≈ç+4uwpi!"#€%&/()(="€)?=)(€egfökawegöjhsrögjhöaugaigptawe',
+	'The term procedural refers to the process that computes a particular function. Fractals are geometric patterns which can often be generated procedurally. Commonplace procedural content includes textures and meshes. Sound is often also procedurally generated, and has applications in both speech synthesis as well as music. It has been used to create compositions in various genres of electronic music by artists such as Brian Eno who popularized the term "generative music".[1]'
+	.'While software developers have applied procedural generation techniques for years, few products have employed this approach extensively. Procedurally generated elements have appeared in earlier video games: The Elder Scrolls II: Daggerfall takes place in a mostly procedurally generated world, giving a world roughly twice the actual size of the British Isles.[clarification needed] Soldier of Fortune from Raven Software uses simple routines to detail enemy models, while its sequel featured a randomly-generated level mode. Avalanche Studios employed procedural generation to create a large and varied group of detailed tropical islands for Just Cause. No Man\'s Sky, a game developed by games studio Hello Games, is all based upon procedurally generated elements.'
+	.'The modern demoscene uses procedural generation to package a great deal of audiovisual content into relatively small programs.'
+	.'New methods and applications are presented annually in conferences such as the IEEE Conference on Computational Intelligence and Games and Artificial Intelligence and Interactive Digital Entertainment.[2]',
 	[
 		'rgba(255,220,190,0.5)',
 		'rgba(190,255,220,0.5)',
