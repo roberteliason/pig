@@ -1,0 +1,12 @@
+{
+    "name": "roberteliason/pig",
+    "description": "Procedural Image Generator for PHP",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Robert Eliason",
+            "email": "robert@pardalis.se"
+        }
+    ],
+    "require": {}
+}

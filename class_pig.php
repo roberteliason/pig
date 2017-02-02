@@ -2,6 +2,8 @@
 
 /**
  * Procedural Illustration Generator
+ *
+ * @todo derive color set from seed
  */
 class PIG
 {
