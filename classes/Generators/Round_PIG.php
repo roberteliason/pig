@@ -1,17 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: roberteliason
- * Date: 2017-02-03
- * Time: 15:31
- */
 
-namespace PIG_Space;
+namespace PIG_Space\Generators;
 
+use PIG_Space\SVG\SVG_Rectangle as SVG_Rectangle;
+use PIG_Space\SVG\SVG_Circle as SVG_Circle;
 
 class Round_PIG extends PIG
 {
-	protected $shapeRadius = 0;
+	protected $shapeRadius   = 0;
+	protected $shapeDiameter = 0;
 
 	/**
 	 * PIG constructor.
@@ -68,6 +65,8 @@ class Round_PIG extends PIG
 		} else {
 			$this->shapeRadius = $radius;
 		}
+
+		$this->shapeDiameter = 2 * $this->shapeRadius;
 	}
 
 	/**
@@ -80,9 +79,9 @@ class Round_PIG extends PIG
 	protected function getX0($char)
 	{
 		$int = $this->convertCharToDecimal($char);
-		$x0  = (($int % $this->shapesCountX) * $this->shapeRadius) + $this->shapeRadius;
+		$x0  = (($int % $this->shapesCountX) * $this->shapeDiameter) + $this->shapeRadius;
 		if ($x0 > ($this->getCanvasWidth() - $this->shapeRadius)) {
-			return $this->getCanvasWidth() - 2 * $this->shapeRadius;
+			return $this->getCanvasWidth() - $this->shapeDiameter;
 		}
 
 		return $x0;
@@ -99,9 +98,9 @@ class Round_PIG extends PIG
 	protected function getY0($char)
 	{
 		$int = $this->convertCharToDecimal($char);
-		$y0  = (($int % $this->shapesCountY) * $this->shapeRadius) + $this->shapeRadius;
+		$y0  = (($int % $this->shapesCountY) * $this->shapeDiameter) + $this->shapeRadius;
 		if($y0 > ($this->getCanvasHeight() - $this->shapeRadius)) {
-			return $this->getCanvasHeight() - 2 * $this->shapeRadius;
+			return $this->getCanvasHeight() - $this->shapeDiameter;
 		}
 
 		return $y0;
@@ -111,18 +110,18 @@ class Round_PIG extends PIG
 	/**
 	 * @return int
 	 */
-	public function getCanvasWidth()
+	protected function getCanvasWidth()
 	{
-		return (int)$this->shapesCountX * $this->shapeRadius;
+		return (int)$this->shapesCountX * $this->shapeDiameter;
 	}
 
 
 	/**
 	 * @return int
 	 */
-	public function getCanvasHeight()
+	protected function getCanvasHeight()
 	{
-		return (int)$this->shapesCountY * $this->shapeRadius;
+		return (int)$this->shapesCountY * $this->shapeDiameter;
 	}
 
 

@@ -1,21 +1,21 @@
 <?php
 
-namespace PIG_Space;
+namespace PIG_Space\SVG;
 
-class SVG_Circle implements SVG_Shape
+class SVG_Rectangle implements SVG_Shape
 {
 	/**
 	 * @var string
 	 */
 	private $template;
 	/**
-	 * Center X
+	 * Upper left corner
 	 *
 	 * @var int
 	 */
 	private $x0 = 0;
 	/**
-	 * Center Y
+	 * Upper left corner
 	 *
 	 * @var int
 	 */
@@ -23,7 +23,11 @@ class SVG_Circle implements SVG_Shape
 	/**
 	 * @var string
 	 */
-	private $radius = '10';
+	private $width = '10';
+	/**
+	 * @var string
+	 */
+	private $height = '10';
 	/**
 	 * @var string
 	 */
@@ -56,8 +60,11 @@ class SVG_Circle implements SVG_Shape
 			if (isset($args['y0'])) {
 				$this->y0 = $args['y0'];
 			}
-			if (isset($args['radius'])) {
-				$this->radius = $args['radius'];
+			if (isset($args['width'])) {
+				$this->width = $args['width'];
+			}
+			if (isset($args['height'])) {
+				$this->height = $args['height'];
 			}
 			if (isset($args['fillColor'])) {
 				$this->fillColor = $args['fillColor'];
@@ -71,7 +78,7 @@ class SVG_Circle implements SVG_Shape
 	 */
 	private function setTemplate()
 	{
-		$this->template = '<circle cx="%d" cy="%d" r="%s" fill="%s"/>';
+		$this->template = '<rect x="%d" y="%d" width="%s" height="%s" fill="%s"/>';
 	}
 
 
@@ -86,7 +93,8 @@ class SVG_Circle implements SVG_Shape
 			$this->template,
 			$this->x0,
 			$this->y0,
-			$this->radius,
+			$this->width,
+			$this->height,
 			$this->fillColor
 		);
 	}
