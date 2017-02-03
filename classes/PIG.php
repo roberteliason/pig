@@ -9,13 +9,13 @@ namespace PIG_Space;
  */
 class PIG
 {
-	private $shapesCountX = 0;
-	private $shapesCountY = 0;
-	private $shapeX = 0;
-	private $shapeY = 0;
-	private $seed = '';
-	private $colors = [];
-	private $backgroundColor = '';
+	protected $shapesCountX = 0;
+	protected $shapesCountY = 0;
+	protected $shapeX = 0;
+	protected $shapeY = 0;
+	protected $seed = '';
+	protected $colors = [];
+	protected $backgroundColor = '';
 
 
 	/**
