@@ -1,5 +1,7 @@
 <?php
 
+namespace PIG_Space;
+
 /**
  * Procedural Illustration Generator
  *
@@ -189,7 +191,6 @@ class PIG
 		$seedLength = strlen($this->seed);
 		$iterations = $seedLength - ($seedLength % 3);
 		$shapes     = [];
-		echo("$iterations iterations" . PHP_EOL);
 
 		for ($i = 0; $i <= $iterations; $i += 3) {
 			$shapes[] = [
@@ -213,7 +214,9 @@ class PIG
 		$canvasWidth  = $this->getCanvasWidth();
 		$canvasHeight = $this->getCanvasHeight();
 		$svgHeader    = '<svg width="%d" height="%d" version="1.1" xmlns="http://www.w3.org/2000/svg">';
-		$rectangle    = '<rect x="%d" y="%d" width="%s" height="%s" fill="%s"/>';
+		$background   = New SVG_Rectangle(
+			['x0' => 0, 'y0' => 0, 'width' => '100%', 'height' => '100%', 'fillColor' => $this->backgroundColor,]
+		);
 
 		$output = sprintf(
 			          $svgHeader,
@@ -221,24 +224,20 @@ class PIG
 			          $canvasHeight
 		          ) . PHP_EOL;
 
-		$output .= "\t" . sprintf(
-				$rectangle,
-				0,
-				0,
-				'100%',
-				'100%',
-				$this->backgroundColor
-			) . PHP_EOL;
+		$output .= "\t" . $background->getShape() . PHP_EOL;
 
 		foreach ($this->proceduralGenerator() as $key => $shape) {
-			$output .= "\t" . sprintf(
-					$rectangle,
-					$shape['x0'],
-					$shape['y0'],
-					$this->shapeX,
-					$this->shapeY,
-					$shape['c']
-				) . PHP_EOL;
+			$rectangle = New SVG_Rectangle(
+				[
+					'x0'        => $shape['x0'],
+					'y0'        => $shape['y0'],
+					'width'     => $this->shapeX,
+					'height'    => $this->shapeY,
+					'fillColor' => $shape['c'],
+				]
+			);
+
+			$output .= "\t" . $rectangle->getShape() . PHP_EOL;
 		}
 		$output .= '</svg>';
 
@@ -254,8 +253,7 @@ class PIG
 	public function saveSVG($filename = 'pig.svg')
 	{
 		$svg  = $this->renderSVG();
-		$path = dirname(__FILE__) . '/' . $filename;
-		var_dump($path);
+		$path = dirname(__FILE__) . '/../' . $filename;
 
 		file_put_contents($path, $svg);
 	}
@@ -271,22 +269,3 @@ class PIG
 		}
 	}
 }
-
-$ThePIG = New PIG(
-	'The term procedural refers to the process that computes a particular function. Fractals are geometric patterns which can often be generated procedurally. Commonplace procedural content includes textures and meshes. Sound is often also procedurally generated, and has applications in both speech synthesis as well as music. It has been used to create compositions in various genres of electronic music by artists such as Brian Eno who popularized the term "generative music".[1]'
-	.'While software developers have applied procedural generation techniques for years, few products have employed this approach extensively. Procedurally generated elements have appeared in earlier video games: The Elder Scrolls II: Daggerfall takes place in a mostly procedurally generated world, giving a world roughly twice the actual size of the British Isles.[clarification needed] Soldier of Fortune from Raven Software uses simple routines to detail enemy models, while its sequel featured a randomly-generated level mode. Avalanche Studios employed procedural generation to create a large and varied group of detailed tropical islands for Just Cause. No Man\'s Sky, a game developed by games studio Hello Games, is all based upon procedurally generated elements.'
-	.'The modern demoscene uses procedural generation to package a great deal of audiovisual content into relatively small programs.'
-	.'New methods and applications are presented annually in conferences such as the IEEE Conference on Computational Intelligence and Games and Artificial Intelligence and Interactive Digital Entertainment.[2]',
-	[
-		'rgba(255,220,190,0.5)',
-		'rgba(190,255,220,0.5)',
-		'rgba(220,190,255,0.5)',
-		'rgba(255,220,250,0.25)',
-		'rgba(150,255,220,0.25)',
-		'rgba(220,250,255,0.25)'
-	],
-	'rgba(0, 0, 0, 0.5)',
-	50, 50, 16, 12
-);
-$ThePIG->getRawDataFromSeed();
-$ThePIG->saveSVG('shapes.svg');
