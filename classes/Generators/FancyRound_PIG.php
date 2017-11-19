@@ -2,6 +2,7 @@
 
 namespace PIG_Space\Generators;
 
+use PIG_Space\InfiniteSeed;
 use PIG_Space\SVG\SVG_Rectangle as SVG_Rectangle;
 use PIG_Space\SVG\SVG_Circle as SVG_Circle;
 use PIG_Space\SVG\SVG_CircularGradient as SVG_CircularGradient;
@@ -23,6 +24,7 @@ class FancyRound_PIG extends PIG
 	 * @param int    $radius
 	 * @param int    $shapesCountX
 	 * @param int    $shapesCountY
+	 * @param int    $iterations
 	 */
 	public function __construct(
 		$seed = '',
@@ -30,15 +32,15 @@ class FancyRound_PIG extends PIG
 		$backgroundColor = '',
 		$radius = 0,
 		$shapesCountX = 0,
-		$shapesCountY = 0
+		$shapesCountY = 0,
+		$iterations = 999
 	) {
 		parent::__construct();
 
 		if (empty($seed)) {
-			$this->seed = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-		} else {
-			$this->seed = $seed;
+			$seed = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 		}
+		$this->seed = new InfiniteSeed($seed);
 
 		if (empty($colors)) {
 			$this->colors = ['white', 'gray', 'black'];
@@ -70,9 +72,15 @@ class FancyRound_PIG extends PIG
 			$this->shapeRadius = $radius;
 		}
 
+		if (empty($iterations) && !is_numeric($iterations)) {
+			$this->iterations = 999;
+		} else {
+			$this->iterations = intval($iterations);
+		}
+
 		$this->shapeDiameter = 2 * $this->shapeRadius;
 		$this->gradient      = New SVG_CircularGradient(['name' => 'radialGradient', 'colors' => $this->colors]);
-		$this->filter        = New SVG_GaussianFilter(['name' => 'blur', 'amount' => 1]);
+		$this->filter        = New SVG_GaussianFilter(['name' => 'blur', 'amount' => 0.5]);
 	}
 
 	/**
@@ -166,15 +174,13 @@ class FancyRound_PIG extends PIG
 	 */
 	protected function proceduralGenerator()
 	{
-		$seedLength = strlen($this->seed);
-		$iterations = $seedLength - ($seedLength % 3);
 		$shapes     = [];
 
-		for ($i = 0; $i <= $iterations; $i += 3) {
+		for ($i = 0; $i <= $this->iterations; $i += 3) {
 			$shapes[] = [
-				'x0' => $this->getX0($this->seed[$i]),
-				'y0' => $this->getY0($this->seed[$i + 1]),
-				'c'  => 'url(#'.$this->getGradient($this->seed[$i + 2]).')',
+				'x0' => $this->getX0($this->seed->getNext()),
+				'y0' => $this->getY0($this->seed->getNext()),
+				'c'  => 'url(#'.$this->getGradient($this->seed->getNext()).')',
 			];
 		}
 

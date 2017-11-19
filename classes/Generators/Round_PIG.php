@@ -2,6 +2,7 @@
 
 namespace PIG_Space\Generators;
 
+use PIG_Space\InfiniteSeed;
 use PIG_Space\SVG\SVG_Rectangle as SVG_Rectangle;
 use PIG_Space\SVG\SVG_Circle as SVG_Circle;
 
@@ -19,6 +20,7 @@ class Round_PIG extends PIG
 	 * @param int    $radius
 	 * @param int    $shapesCountX
 	 * @param int    $shapesCountY
+	 * @param int    $iterations
 	 */
 	public function __construct(
 		$seed = '',
@@ -26,15 +28,15 @@ class Round_PIG extends PIG
 		$backgroundColor = '',
 		$radius = 0,
 		$shapesCountX = 0,
-		$shapesCountY = 0
+		$shapesCountY = 0,
+		$iterations = 999
 	) {
 		parent::__construct();
 
 		if (empty($seed)) {
-			$this->seed = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-		} else {
-			$this->seed = $seed;
+			$seed = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 		}
+		$this->seed = new InfiniteSeed( $seed );
 
 		if (empty($colors)) {
 			$this->colors = ['white', 'gray', 'black'];
@@ -66,6 +68,12 @@ class Round_PIG extends PIG
 			$this->shapeRadius = $radius;
 		}
 
+		if (empty($iterations) && !is_numeric($iterations)) {
+			$this->iterations = 999;
+		} else {
+			$this->iterations = intval($iterations);
+		}
+
 		$this->shapeDiameter = 2 * $this->shapeRadius;
 	}
 
@@ -80,6 +88,9 @@ class Round_PIG extends PIG
 	{
 		$int = $this->convertCharToDecimal($char);
 		$x0  = (($int % $this->shapesCountX) * $this->shapeDiameter) + $this->shapeRadius;
+
+		print( $char . '=>' . $int . '/' . $x0 . PHP_EOL );
+
 		if ($x0 > ($this->getCanvasWidth() - $this->shapeRadius)) {
 			return $this->getCanvasWidth() - $this->shapeDiameter;
 		}

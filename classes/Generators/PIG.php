@@ -2,6 +2,7 @@
 
 namespace PIG_Space\Generators;
 
+use PIG_Space\InfiniteSeed;
 use PIG_Space\SVG\SVG_Rectangle as SVG_Rectangle;
 
 /**
@@ -15,9 +16,10 @@ class PIG
 	protected $shapesCountY = 0;
 	protected $shapeX = 0;
 	protected $shapeY = 0;
-	protected $seed = '';
+	protected $seed;
 	protected $colors = [];
 	protected $backgroundColor = '';
+	protected $iterations = 0;
 
 
 	/**
@@ -30,6 +32,7 @@ class PIG
 	 * @param int    $height
 	 * @param int    $shapesCountX
 	 * @param int    $shapesCountY
+	 * @param int    $iterations
 	 */
 	public function __construct(
 		$seed = '',
@@ -38,13 +41,13 @@ class PIG
 		$width = 0,
 		$height = 0,
 		$shapesCountX = 0,
-		$shapesCountY = 0
+		$shapesCountY = 0,
+		$iterations = 999
 	) {
 		if (empty($seed)) {
-			$this->seed = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
-		} else {
-			$this->seed = $seed;
+			$seed = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 		}
+		$this->seed = New InfiniteSeed($seed);
 
 		if (empty($colors)) {
 			$this->colors = ['white', 'gray', 'black'];
@@ -80,6 +83,12 @@ class PIG
 			$this->shapesCountY = 15;
 		} else {
 			$this->shapesCountY = $shapesCountY;
+		}
+
+		if (empty($iterations) && !is_numeric($iterations)) {
+			$this->iterations = 999;
+		} else {
+			$this->iterations = intval($iterations);
 		}
 	}
 
@@ -118,7 +127,7 @@ class PIG
 	 *
 	 * @return string
 	 */
-	protected function transliteratSeed()
+	protected function transliterateSeed()
 	{
 		$this->seed = iconv("UTF-8", "ISO-8859-1//TRANSLIT", $this->seed);
 	}
@@ -190,15 +199,13 @@ class PIG
 	 */
 	protected function proceduralGenerator()
 	{
-		$seedLength = strlen($this->seed);
-		$iterations = $seedLength - ($seedLength % 3);
 		$shapes     = [];
 
-		for ($i = 0; $i <= $iterations; $i += 3) {
+		for ($i = 0; $i <= $this->iterations; $i++) {
 			$shapes[] = [
-				'x0' => $this->getX0($this->seed[$i]),
-				'y0' => $this->getY0($this->seed[$i + 1]),
-				'c'  => $this->getColor($this->seed[$i + 2]),
+				'x0' => $this->getX0($this->seed->getNext()),
+				'y0' => $this->getY0($this->seed->getNext()),
+				'c'  => $this->getColor($this->seed->getNext()),
 			];
 		}
 
